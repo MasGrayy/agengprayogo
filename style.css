@@ -1,0 +1,273 @@
+/* ================= RESET ================= */
+*,
+*::before,
+*::after{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+/* ================= BODY ================= */
+body{
+  font-family:'Inter',sans-serif;
+  background:#f4f6fb;
+  color:#1f2937;
+  line-height:1.6;
+}
+
+/* ================= NAVBAR ================= */
+.navbar{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  background:#0f172a;
+  color:#fff;
+  padding:14px 24px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  z-index:100;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.brand img{
+  width:40px;
+  height:40px;
+  object-fit:contain;
+}
+
+.brand span{
+  font-family:'Poppins',sans-serif;
+  font-weight:600;
+  font-size:1rem;
+}
+
+.nav-actions{
+  display:flex;
+  gap:10px;
+}
+
+.navbar button{
+  background:#ef4444;
+  border:none;
+  color:#fff;
+  padding:10px 22px;
+  border-radius:24px;
+  font-size:.85rem;
+  cursor:pointer;
+}
+
+/* ================= HERO ================= */
+.hero{
+  margin-top:72px;
+  min-height:45vh;
+  background:#111;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:40px 20px;
+  color:#fff;
+}
+
+.hero-text h1{
+  font-family:'Poppins',sans-serif;
+  font-size:2.2rem;
+  margin-bottom:10px;
+}
+
+.hero-text p{
+  font-size:.95rem;
+  color:#e5e7eb;
+}
+
+/* ================= MAIN ================= */
+main{
+  max-width:1200px;
+  margin:auto;
+  padding:80px 24px 60px;
+}
+
+/* ================= SECTION ================= */
+section{
+  background:#ffffff;
+  padding:40px 36px;
+  border-radius:32px;
+  margin-bottom:50px;
+}
+
+section h2{
+  font-family:'Poppins',sans-serif;
+  font-size:1.6rem;
+  margin-bottom:32px;
+}
+
+/* ================= ADMIN TOOLS ================= */
+.admin-only{
+  display:flex;
+  gap:16px;
+  margin-bottom:26px;
+  flex-wrap:wrap;
+}
+
+.admin-only button{
+  border:none;
+  padding:12px 26px;
+  border-radius:28px;
+  font-size:.85rem;
+  cursor:pointer;
+  color:#fff;
+}
+
+.btn-add{background:#22c55e}
+.btn-download{background:#0ea5e9}
+
+/* ================= GRID ================= */
+.grid-atlet{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:36px;
+}
+
+/* ================= CARD ATLET ================= */
+.atlet-card{
+  background:#ffffff;
+  border-radius:30px;
+  padding:30px 26px 34px;
+  text-align:center;
+  box-shadow:0 16px 36px rgba(15,23,42,.12);
+  transition:.3s ease;
+}
+
+.atlet-card:hover{
+  transform:translateY(-6px);
+}
+
+.foto-atlet{
+  width:100%;
+  height:240px;
+  object-fit:contain;
+  background:#f1f5f9;
+  border-radius:24px;
+  padding:14px;
+  margin-bottom:20px;
+}
+
+.atlet-card h3{
+  font-family:'Poppins',sans-serif;
+  font-size:1.15rem;
+  margin-bottom:6px;
+}
+
+.atlet-card p{
+  font-size:.95rem;
+  color:#475569;
+}
+
+/* ================= MEDALI ================= */
+.medali-box{
+  display:flex;
+  justify-content:center;
+  gap:14px;
+  margin:16px 0 6px;
+  font-size:.9rem;
+  font-weight:600;
+}
+
+.medali-box span{
+  background:#f8fafc;
+  padding:8px 14px;
+  border-radius:18px;
+  box-shadow:0 6px 14px rgba(0,0,0,.08);
+}
+
+/* ================= DETAIL ================= */
+.detail{
+  margin-top:16px;
+  line-height:1.8;
+  font-size:.9rem;
+}
+
+/* ================= BUTTON CARD ================= */
+.atlet-card button{
+  margin-top:14px;
+  margin-inline:4px;
+  padding:10px 20px;
+  border:none;
+  border-radius:22px;
+  background:#ef4444;
+  color:#fff;
+  font-size:.8rem;
+  cursor:pointer;
+}
+
+.atlet-card .red{
+  background:#b91c1c;
+}
+
+/* ================= MODAL ================= */
+.modal{
+  position:fixed;
+  inset:0;
+  background:rgba(15,23,42,.7);
+  display:none;
+  justify-content:center;
+  align-items:center;
+  padding:20px;
+  z-index:200;
+}
+
+.modal-box{
+  background:#ffffff;
+  width:100%;
+  max-width:460px;
+  padding:40px 36px;
+  border-radius:32px;
+  text-align:center;
+}
+
+.modal-box h3{
+  font-family:'Poppins',sans-serif;
+  margin-bottom:18px;
+}
+
+.modal-box input,
+.modal-box select{
+  width:100%;
+  padding:14px 18px;
+  margin-bottom:16px;
+  border-radius:18px;
+  border:1px solid #e5e7eb;
+  font-size:.9rem;
+}
+
+.modal-box button{
+  width:100%;
+  padding:14px;
+  border:none;
+  border-radius:28px;
+  background:#ef4444;
+  color:#fff;
+  margin-top:10px;
+  cursor:pointer;
+}
+
+.modal-box .btn-secondary{
+  background:#e5e7eb;
+  color:#111827;
+}
+
+/* ================= RESPONSIVE ================= */
+@media(max-width:768px){
+  main{padding:70px 18px 40px}
+  section{padding:32px 24px;border-radius:28px}
+  .grid-atlet{grid-template-columns:1fr}
+  .atlet-card button{width:100%}
+  .admin-only{flex-direction:column}
+}
