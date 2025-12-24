@@ -7,11 +7,12 @@
 
   <!-- FONT -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&family=Inter&display=swap" rel="stylesheet">
+
+  <!-- CSS TERPISAH -->
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<!-- NAVBAR -->
 <header class="navbar">
   <div class="brand">
     <img src="logo.jpg" alt="Logo">
@@ -23,16 +24,14 @@
   </div>
 </header>
 
-<!-- HERO -->
 <section class="hero" id="landing">
   <div class="hero-text">
-    <img src="cover.jpg">
+    <img src="cover.jpg" alt="Cover">
     <h1>Prestasi Atlet</h1>
     <p>Data Atlet & Perolehan Medali</p>
   </div>
 </section>
 
-<!-- PUBLIC -->
 <main id="public">
   <section>
     <h2>Data Atlet</h2>
@@ -40,11 +39,9 @@
   </section>
 </main>
 
-<!-- DASHBOARD -->
 <main id="dashboard" style="display:none">
   <section class="admin-only" style="display:none">
     <button class="btn-add" onclick="openModal()">➕ Tambah Atlet</button>
-    <button class="btn-download" onclick="downloadExcel()">⬇ Unduh Excel</button>
   </section>
 
   <section>
@@ -53,7 +50,7 @@
   </section>
 </main>
 
-<!-- LOGIN MODAL -->
+<!-- LOGIN -->
 <div class="modal" id="loginModal">
   <div class="modal-box">
     <h3>Login</h3>
@@ -61,7 +58,7 @@
       <option value="admin">Admin</option>
       <option value="atlet">Atlet</option>
     </select>
-    <input id="username" placeholder="Nama Atlet / Admin">
+    <input id="username" placeholder="Nama">
     <input id="password" type="password" placeholder="Password">
     <button onclick="login()">Masuk</button>
     <button class="btn-secondary" onclick="closeLogin()">Batal</button>
@@ -87,137 +84,97 @@
 <script>
 let role="", atletLogin=null, editIndex=null;
 
-/* LOAD */
 function loadPublic(){
   const data = JSON.parse(localStorage.getItem("atlet")) || [];
-  gridPublic.innerHTML = "";
-  data.forEach(a => gridPublic.innerHTML += cardHTML(a,false,false));
+  gridPublic.innerHTML="";
+  data.forEach(a=>gridPublic.innerHTML+=cardHTML(a,false,false));
 }
 loadPublic();
 
-/* LOGIN */
-function openLogin(){ loginModal.style.display="flex" }
-function closeLogin(){ loginModal.style.display="none" }
+function openLogin(){loginModal.style.display="flex"}
+function closeLogin(){loginModal.style.display="none"}
 
 function login(){
-  const r = loginRole.value;
-  const u = username.value.trim();
-  const p = password.value.trim();
-  const d = JSON.parse(localStorage.getItem("atlet")) || [];
+  const r=loginRole.value,u=username.value,p=password.value;
+  const d=JSON.parse(localStorage.getItem("atlet"))||[];
 
   if(r==="admin"){
-    if(u!=="admin"||p!=="admin") return alert("Login admin salah");
-    role="admin"; showDashboard(); loadDashboard(); return;
+    if(u!=="admin"||p!=="admin")return alert("Admin salah");
+    role="admin";showDashboard();loadDashboard();return;
   }
 
-  atletLogin = d.find(a=>a.nama.toLowerCase()===u.toLowerCase());
-  if(!atletLogin) return alert("Atlet tidak ditemukan");
-  if(atletLogin.password!==p) return alert("Password salah");
-
-  role="atlet"; showDashboard(); loadDashboard();
+  atletLogin=d.find(a=>a.nama===u);
+  if(!atletLogin||atletLogin.password!==p)return alert("Login gagal");
+  role="atlet";showDashboard();loadDashboard();
 }
 
 function showDashboard(){
-  closeLogin();
   landing.style.display="none";
   public.style.display="none";
   dashboard.style.display="block";
   loginBtn.style.display="none";
   logoutBtn.style.display="inline-block";
+  closeLogin();
 }
 
-function logout(){ location.reload() }
+function logout(){location.reload()}
 
-/* DASHBOARD */
 function loadDashboard(){
-  const d = JSON.parse(localStorage.getItem("atlet")) || [];
-  gridDashboard.innerHTML = "";
-
+  const d=JSON.parse(localStorage.getItem("atlet"))||[];
+  gridDashboard.innerHTML="";
   if(role==="admin"){
     dashTitle.innerText="Dashboard Admin";
     document.querySelector(".admin-only").style.display="flex";
     d.forEach((a,i)=>gridDashboard.innerHTML+=cardHTML(a,true,true,i));
   }else{
     dashTitle.innerText="Profil Atlet";
-    const i = d.findIndex(x=>x.nama===atletLogin.nama);
-    gridDashboard.innerHTML = cardHTML(d[i],true,false,i);
+    const i=d.findIndex(x=>x.nama===atletLogin.nama);
+    gridDashboard.innerHTML=cardHTML(d[i],true,false,i);
   }
 }
 
-/* CARD */
-function cardHTML(a,editable,medali,i){
-return `
+function cardHTML(a,e,m,i){
+return`
 <div class="atlet-card">
-  <img class="foto-atlet" src="${a.foto || 'https://via.placeholder.com/300'}">
-  <h3>${a.nama}</h3>
-  <p>${a.tim}</p>
+<img class="foto-atlet" src="${a.foto||'https://via.placeholder.com/300'}">
+<h3>${a.nama}</h3>
+<p>${a.tim}</p>
+<div class="medali-box">
+<span>🥇 ${a.emas||0}</span>
+<span>🥈 ${a.perak||0}</span>
+<span>🥉 ${a.perunggu||0}</span>
+</div>
+<div class="detail">
+Umur ${a.umur}<br>Tinggi ${a.tinggi}<br>Berat ${a.berat}<br>Sabuk ${a.sabuk}
+</div>
+${e?`<button onclick="edit(${i})">✏ Edit</button>`:""}
+${m?`<button onclick="hapus(${i})" class="red">🗑 Hapus</button>`:""}
+</div>`}
 
-  <div class="medali-box">
-    <span>🥇 ${a.emas||0}</span>
-    <span>🥈 ${a.perak||0}</span>
-    <span>🥉 ${a.perunggu||0}</span>
-  </div>
-
-  <div class="detail">
-    Umur ${a.umur} th<br>
-    Tinggi ${a.tinggi} cm<br>
-    Berat ${a.berat} kg<br>
-    Sabuk ${a.sabuk}
-  </div>
-
-  ${editable ? `<button onclick="edit(${i})">✏ Edit</button>` : ""}
-  ${editable ? `<button onclick="ubahPassword(${i})">🔑 Ganti Sandi</button>` : ""}
-
-  ${medali ? `
-    <button onclick="medaliAdd(${i},'emas')">+🥇</button>
-    <button onclick="medaliAdd(${i},'perak')">+🥈</button>
-    <button onclick="medaliAdd(${i},'perunggu')">+🥉</button>
-    <button class="red" onclick="hapus(${i})">🗑 Hapus</button>
-  ` : ""}
-</div>`;
-}
-
-/* CRUD + MEDALI */
-function openModal(){ editIndex=null; modal.style.display="flex" }
-function closeModal(){ modal.style.display="none" }
+function openModal(){editIndex=null;modal.style.display="flex"}
+function closeModal(){modal.style.display="none"}
 
 function simpan(){
-  const d = JSON.parse(localStorage.getItem("atlet")) || [];
-  const save = foto64 => {
-    const obj={
-      nama:nama.value,tim:tim.value,umur:umur.value,
-      tinggi:tinggi.value,berat:berat.value,sabuk:sabuk.value,
-      foto:foto64||d[editIndex]?.foto,
-      emas:d[editIndex]?.emas||0,
-      perak:d[editIndex]?.perak||0,
-      perunggu:d[editIndex]?.perunggu||0,
-      password:d[editIndex]?.password||"12345"
-    };
-    editIndex===null?d.push(obj):d[editIndex]=obj;
-    localStorage.setItem("atlet",JSON.stringify(d));
-    closeModal(); loadPublic(); loadDashboard();
-  };
-
+  const d=JSON.parse(localStorage.getItem("atlet"))||[];
+  const save=f=>{
+    const o={nama:nama.value,tim:tim.value,umur:umur.value,
+    tinggi:tinggi.value,berat:berat.value,sabuk:sabuk.value,
+    foto:f,emas:0,perak:0,perunggu:0,password:"12345"};
+    d.push(o);localStorage.setItem("atlet",JSON.stringify(d));
+    closeModal();loadPublic();loadDashboard();
+  }
   if(foto.files[0]){
     const r=new FileReader();
     r.onload=()=>save(r.result);
     r.readAsDataURL(foto.files[0]);
-  } else save();
-}
-
-function medaliAdd(i,j){
-  const d=JSON.parse(localStorage.getItem("atlet"));
-  d[i][j]++; localStorage.setItem("atlet",JSON.stringify(d));
-  loadPublic(); loadDashboard();
+  }else save("");
 }
 
 function hapus(i){
-  if(confirm("Hapus atlet?")){
-    const d=JSON.parse(localStorage.getItem("atlet"));
-    d.splice(i,1);
-    localStorage.setItem("atlet",JSON.stringify(d));
-    loadPublic(); loadDashboard();
-  }
+  const d=JSON.parse(localStorage.getItem("atlet"));
+  d.splice(i,1);
+  localStorage.setItem("atlet",JSON.stringify(d));
+  loadPublic();loadDashboard();
 }
 </script>
 
